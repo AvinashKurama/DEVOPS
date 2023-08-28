@@ -9,3 +9,4 @@ RUN apt update && apt install default-jre -y
 COPY --from=stage1 /app/Prime.class .
 CMD ["Prime"]
 ENTRYPOINT ["java"]
+
