@@ -1,0 +1,163 @@
+ sudo apt update
+ sudo apt-get install 
+ 
+ maven:
+ mvn package
+ 
+ -----------------------------------------------
+ java commands:
+ 
+ ps aux | grep java
+ nohup java -jar test.jar>/dev/null &           ------- to run in background
+ 
+ /src/main/resource/application.properties
+ 
+ context path and port
+ server.port=8081
+ server.servlet.context-path=/docker
+---------------------------------------------------------------
+ NAME=AVINASH
+ echo $NAME
+ ENV
+ export NAME=AVINASH
+ env | grep name
+ env | grep -i name
+ export NAME=avinash
+ ~/.bashrc
+ sudo ~/.bashrc
+ sudo -i
+ env | grep -i name
+ vi ~/.bashrc
+ env | grep NAME
+ env | grep -I NAME
+ env | grep -i NAME
+ export NAME=avinash ---------- past at ~/.bashrc
+ vi ~/.bashrc
+ source ~/.bashrc
+ env | grep -i NAME
+ echo "export NAME=avinash" >> /etc/profile
+ source /etc/profile
+ --------------------------------------------------------------- 
+ 
+NGINX Configeration
+
+events{}
+http {
+    server {
+        listen 80;
+        server_name 18.143.180.98;
+
+        # Your configuration for port 80 goes here
+        location /nginx {
+        proxy_pass http://localhost:8081;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+        location /tomcat {
+        proxy_pass http://localhost:8082;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+           location / {
+        proxy_pass http://localhost:8083;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+
+  }
+}
+
+
+ssl certificates
+
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+
+CRT:
+
+-----BEGIN CERTIFICATE-----
+MIIDezCCAmOgAwIBAgIUINmRUtguMD/UyX9Jytyhvxe+gFYwDQYJKoZIhvcNAQEL
+BQAwTTELMAkGA1UEBhMCSU4xCzAJBgNVBAgMAlRTMQwwCgYDVQQHDANIWUQxCzAJ
+BgNVBAoMAkFMMRYwFAYJKoZIhvcNAQkBFgdhdmkuY29tMB4XDTIzMDgyMzEyNDU0
+NVoXDTI0MDgyMjEyNDU0NVowTTELMAkGA1UEBhMCSU4xCzAJBgNVBAgMAlRTMQww
+CgYDVQQHDANIWUQxCzAJBgNVBAoMAkFMMRYwFAYJKoZIhvcNAQkBFgdhdmkuY29t
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA09xd7pSBEz1BTWgdl0NO
+BvpKzYsWMJ3M7aDKmDD2hJZg2s60QAGY1RksJ5fiPOzE3gLEb2J2qNIQoEVBSV9T
+Ip94A+AcjQrFXxKRa1oVn6+VT49UZ6mvZt9pVMBNcrG2HkU+EZiBV+kQKs+6jrQ0
+NrrdYVZVujV46UXckmFV9dHUvjkZ/x7wsaiX2WzuF5cBr5NLheM1pDokuykDRt80
+VzgiOkyC1w9F7mfOPdAW4lj2pZXnhJfNUdRyCm1GBDNsVWHVNqBDL7BIkCUriNTT
+Y55rXt6PSrkdJKltecYHE0tsML8qfbVRpyInooCHv9aD3An/hh0R/+JyKqqlCqxh
+BQIDAQABo1MwUTAdBgNVHQ4EFgQU555/q7GkVIp2wqcqatwtlUXn0NIwHwYDVR0j
+BBgwFoAU555/q7GkVIp2wqcqatwtlUXn0NIwDwYDVR0TAQH/BAUwAwEB/zANBgkq
+hkiG9w0BAQsFAAOCAQEAmum5I55ah6iagwGjtafVDnwBWTr9WJFeC6CDkiuXiZwh
+gYxguAvbb8mcWtS9qbbHMNrWtj1Wv02pQJNabr1i1K7aOtBXeSDOJ6TxSneQBtq+
+WRh8+DYgzA3T4pwUhUIqj/6LvncpQFCrBa8MBCv5ricMu8Fet0LsCB6bsWQ6Xa8v
+xSu9FSXJnXoc+HcWd/3rntyPdeGTw6iyhzldjoU0jJCzkxcaYLIBt3lj50l7RxLG
+6GARynaZyCPQkTfTPhDOHEx1VcqqO6ZhBA0ABRrGBm1JHkhSGvNaLthcbDi0jmLh
+H9wdFV2IgNomnRTuxEhjnnmE2Zzd6dAVYbB7zn77qg==
+-----END CERTIFICATE-----
+
+KEY:
+
+-----BEGIN PRIVATE KEY-----
+MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDT3F3ulIETPUFN
+aB2XQ04G+krNixYwncztoMqYMPaElmDazrRAAZjVGSwnl+I87MTeAsRvYnao0hCg
+RUFJX1Min3gD4ByNCsVfEpFrWhWfr5VPj1Rnqa9m32lUwE1ysbYeRT4RmIFX6RAq
+z7qOtDQ2ut1hVlW6NXjpRdySYVX10dS+ORn/HvCxqJfZbO4XlwGvk0uF4zWkOiS7
+KQNG3zRXOCI6TILXD0XuZ8490BbiWPalleeEl81R1HIKbUYEM2xVYdU2oEMvsEiQ
+JSuI1NNjnmte3o9KuR0kqW15xgcTS2wwvyp9tVGnIieigIe/1oPcCf+GHRH/4nIq
+qqUKrGEFAgMBAAECggEAGEEcFIJg1+Hai4ZAuP6mEgDD4TiBSlXjzk1AVGBqoIQ8
+w2AIXQ7cade6E9r8thU0dpGM3o7rCb8UKIe1MTVeEFJ/DBEzWOb48JObcqr7WxmK
+t53aP7c6kvA/H/Tss5WVGsMPl4vE5wUSFOyiLXsuQm5t22+7BxiJu/RZC6hkDcJf
+Wczi3WhAx7Kf/4B2zVqOoObSc7TZjnRwvE9x9bmuGIkQ+HvPYkVNnX4QykuF0AXn
+JnYUnoyPzS4ZWTQbGti6W2p5/sGtKtk8rqobTIY+gfqsDeXm8HuxMywWHpEmMNpm
+YfesCYfMeZbnLz0K3NsuoF04Y+wTBPeZgK4jug0rkwKBgQDaEbeYnbwar1as9dWD
+eA2Xb7H+J5Ob6kcTK6WLWu4cnzvapdIwuE+cZEFj6agu36Rne4vjp6P//f9iq42V
+W7l01nbwNQOh6iZM22iR4KagRPgJTVg/vx44L+AdAmz6Zbzc+2+FF2lWlBm3xDu5
+YvtSN5Xwh++aK8vhJtsJSufAjwKBgQD4tjMKMAyxSShC28vWftk3uWhMj1ZgNLnw
+VIHoIGiWqvaGQHmewe9H/wvU4VjTXbs2ZhmscqHvZlzxmItp1knw5O0h6ipM9wCv
+7BNurA6uw7xN6BTHzoce+hlylkwb7I0uTKFtTHY7qZf0jVgqfz+DqSIR4HuPdg3I
+DwU2/CLnKwKBgEYonxX14ZgAQ3WgHhKPJGhNYkmvt/jYtgc/6qHcHnGM9XfSE77i
+/ZIGW1dmzFpQT5ePkyEqRUROFsVLBmFAQnmJqnh7xfBo4eumR41vZox3xAlSHgtc
+VL+k/4i1yBQDeXDrYCTEtHpLab7K3qA1bUA1bAMX6QmD/7MvihcCR2+XAoGAJQn9
+T+cX/M8IT+yrzqXVc5cJEV3HX0x65G+xaQBqkwWi8RtpAVugZvh0qp9kuxWaa9+I
+s0XfF+gGr3QoTvq6yEVPi110L0IZuBlQS4sUJLLBuFh3v8niFZrpb0cyznXMELkY
+0U4xzXDUUHc8ShfpPZJSoJbtz8+k/cY+4JFsIUECgYA0Bs61ga1/JWBUXrklZblA
+sPTcD0wlnExcT3dMuYjo9s64F/EGsOD9m79VnKLczd+fTR6M0zvr8YAC0ZzDD1Wd
+zWa04nuaKnmfLGB9d+yV/iJXCWLpOBCV7RDXMbCmOOluF7ihHgOQtBKSsdfD7M1V
+/O4djG1dJ7CqLBmAX3r3Qw==
+-----END PRIVATE KEY-----
+
+
+context path
+server.port=8080
+server.contextPath=/java1
+
+Docker Commands
+sudo docker images
+sudo docker rmi -f 764a04af3eff
+sudo docker build -t dockerfile .
+sudo docker run -d --name c1 -p 8081:8080 dockerfile
+sudo docker exec -it c1 /bin/bash
+
+
+
+
+EBS - Volumes
+sudo file -s /dev/xvdf
+sudo mkfs -t ext4 /dev/xvdf
+sudo mount /dev/xvdf /data
+
+
+Ansible-Installation
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt update
+sudo apt install ansible
+
+
+paths
+ansible inventory --- /etc/ansible/hosts
+nfs - /etc/exports

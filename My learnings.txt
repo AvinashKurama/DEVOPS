@@ -1,0 +1,13 @@
+git clone URL
+
+to push all branches at a time, we need to checkout all branches with bash script
+
+push.sh
+
+for branch in $(git branch -r | grep -v HEAD); do
+    git checkout ${branch#origin/}
+done
+
+
+after that git push master --all.
+
