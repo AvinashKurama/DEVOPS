@@ -1,0 +1,36 @@
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+
+# Ignore .terraform directory
+.terraform/
+
+# Ignore .terraform.lock.hcl file
+terraform.lock.hcl
+
+# Ignore .tfvars files (Terraform variable files)
+*.tfvars
+
+# Ignore override files and CLI configuration
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+terraform.rc
+
+# Ignore CLI configuration files
+.terraformrc
+.terraformrc.json
+
+# Ignore crash log files
+crash.log
+
+# Ignore CLI snapshots
+*.tfstate.snap
+
+# Ignore auto-generated plan files
+terraform.tfplan
+
+# Ignore Visual Studio Code settings
+.vscode/
