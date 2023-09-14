@@ -8,7 +8,7 @@ resource "aws_vpc" "vpc1" {
   cidr_block = var.vpc_cidr
 
   tags = {
-    Name = "vpc-1"
+    Name = "vpc-1-${terraform.workspace}"
   }
 }
 
