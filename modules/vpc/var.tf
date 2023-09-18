@@ -7,13 +7,15 @@ variable "vpc1_cidr"{
 }
 
 
-variable "vpc1-sn1"{
+variable "vpc1_sn1"{
   default = []
 }
 
 
-variable "vpc1-sn2"{
+variable "vpc1_sn2"{
   default = []
 }
   
+variable "vpc1"{  
+}
   

@@ -4,7 +4,7 @@ data "aws_availability_zones" "az1" {
 resource "aws_vpc" "vpc1" {
   cidr_block  = var.vpc1_cidr
   tags = {
-    Name = "vpc1-${workspace}"
+    Name = "vpc1-${terraform.workspace}"
   }
 }
 
@@ -79,7 +79,7 @@ resource "aws_route_table" "vpc1-rt2" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.vpc1-nat.id
+    gateway_id = aws_nat_gateway.vpc1-nat.id
   }
 
   tags = {
@@ -90,13 +90,15 @@ resource "aws_route_table" "vpc1-rt2" {
 /*-------------route-table-assocation--------------*/
 
 resource "aws_route_table_association" "vpc1-a" {
-  subnet_id      = var.vpc1-sn1
+  count          = length(var.az)
+  subnet_id      = aws_subnet.pub-sn1.*.id[count.index]
   route_table_id = aws_route_table.vpc1-rt1.id
 }
 
 
 resource "aws_route_table_association" "vpc1-b" {
-  subnet_id      = var.vpc1-sn2
+  count          = length(var.az)
+  subnet_id      = aws_subnet.prv-sn2.*.id[count.index]
   route_table_id = aws_route_table.vpc1-rt2.id
 }
 

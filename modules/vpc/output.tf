@@ -1,22 +1,19 @@
 output "az"{
-  value = aws_availability_zones.az1.name
+  value = data.aws_availability_zones.az1.names
   }
 
-output "v_vpc_id"{
+output "vpc1"{
   value = aws_vpc.vpc1.id
   }
   
-output "v_sn1"{
-  value = aws_subnet.pub-sub.*.id
+output "vpc1_sn1"{
+  value = aws_subnet.pub-sn1.*.id
   }
   
-output "v_sn2"{
-  value = aws_subnet.priv-sub.*.id
+output "vpc1_sn2"{
+  value = aws_subnet.prv-sn2.*.id
   }
-  
-output "sg_id_bastion" {
-    value = aws_security_group.bastion-sg.id
-}
+
 
 
 
