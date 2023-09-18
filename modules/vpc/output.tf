@@ -10,7 +10,7 @@ output "v_sn1"{
   value = aws_subnet.pub-sub.*.id
   }
   
-output "v_sn1"{
+output "v_sn2"{
   value = aws_subnet.priv-sub.*.id
   }
   
