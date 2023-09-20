@@ -3,7 +3,7 @@ resource "aws_eks_cluster" "dev_cluster" {
   role_arn = aws_iam_role.cluster_role.arn
 
   vpc_config {
-    subnet_ids = concat(aws_subnet.pub-sn1.*.id)
+    subnet_ids = concat(var.vpc1_sn1)
   }
 
   depends_on = [
