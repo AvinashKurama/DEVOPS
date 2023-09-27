@@ -10,7 +10,7 @@ resource "aws_security_group" "sg-webserver" {
    from_port = ingress.value
    to_port = ingress.value
    protocol = "tcp"
-   cidr_blocks = var.ingress.cidr_block
+   cidr_blocks = var.ingress_cidr_block
   }
  }
 
@@ -19,8 +19,8 @@ resource "aws_security_group" "sg-webserver" {
   content {
    from_port = egress.value
    to_port = egress.value
-   protocol = "tcp"
-   cidr_blocks = var.egress.cidr_block
+   protocol = "-1"
+   cidr_blocks = var.egress_cidr_block
   }
  }
 

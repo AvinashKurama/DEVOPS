@@ -97,7 +97,7 @@ resource "aws_route_table" "rt-2" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id = aws_internet_gateway.v_nat.id
+    nat_gateway_id = aws_nat_gateway.v_nat.id
   }
 
   tags = {
@@ -111,13 +111,13 @@ resource "aws_route_table" "rt-2" {
 /*---------------ROUTE-TABLES-ASSOCIATIONs--------------*/
 
 resource "aws_route_table_association" "a" {
-  count          = length(var.az)
+  count          = length(var.v_az)
   subnet_id      = aws_subnet.sn1.*.id[count.index]
   route_table_id = aws_route_table.rt-1.id
 }
 
 resource "aws_route_table_association" "b" {
-  count          = length(var.az)
+  count          = length(var.v_az)
   subnet_id      = aws_subnet.sn2.*.id[count.index]
   route_table_id = aws_route_table.rt-2.id
 }

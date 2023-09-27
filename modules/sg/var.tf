@@ -18,5 +18,5 @@ variable "egress_cidr_block" {
 }
 
 variable "v_sg_web" {
-    type = string    
+    default = []  
 }
