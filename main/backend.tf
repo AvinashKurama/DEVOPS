@@ -1,13 +1,14 @@
 terraform {
   backend "s3" {
-    bucket = "my-bucket-${module.my-vpc1.vpc1}"
+    bucket = "my-bucket-(var.vpc1)"
     key    = "terraform-eks-statefile/tf.statefile"
-    region = "us-east-1"
-	role_arn = aws_iam_role.terraform_backend_role.arn
-  depends_on = aws_s3_bucket.states3.id
+    region = "ap-southeast-1"
+	  role_arn = aws_iam_role.terraform_backend_role.arn
+ /*depends_on = [aws_s3_bucket.states3]*/
   }
 }
 
+/*-----------------------s3-bucket--------------------------*/
 
 resource "aws_s3_bucket" "states3" {
   bucket = "my-bucket-${module.my-vpc1.vpc1}"
@@ -17,6 +18,9 @@ resource "aws_s3_bucket" "states3" {
     Environment = "Dev"
   }
 }
+
+
+/*-----------------------terraform_backend_role--------------------------*/
 
 resource "aws_iam_role" "terraform_backend_role" {
   name = "terraform-eks-backend-role"
@@ -37,37 +41,40 @@ resource "aws_iam_role" "terraform_backend_role" {
 EOF
 }
 
+
+/*-----------------------s3_backend_policy--------------------------*/
+
+
+
 resource "aws_iam_policy" "s3_backend_policy" {
   name        = "s3-backend-policy"
   description = "IAM policy for Terraform S3 backend access"
   
   # Define the policy document that grants access to the specific S3 bucket
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetBucketLocation"
-      ],
-      "Resource": "arn:aws:s3:::my-bucket-${module.my-vpc1.vpc1}"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:DeleteObject",
-        "s3:ListMultipartUploadParts",
-        "s3:AbortMultipartUpload"
-      ],
-      "Resource": "arn:aws:s3:::my-bucket-${module.my-vpc1.vpc1}/*"
-    }
-  ]
-}
-EOF
+    policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "s3:ListBucket",
+          "s3:GetBucketLocation"
+        ],
+        Resource = "arn:aws:s3:::my-bucket-${module.my-vpc1.vpc1}"
+      },
+      {
+        Effect   = "Allow",
+        Action   = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListMultipartUploadParts",
+          "s3:AbortMultipartUpload"
+        ],
+        Resource = "arn:aws:s3:::my-bucket-${module.my-vpc1.vpc1}/*"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "s3_backend_attachment" {
@@ -75,6 +82,17 @@ resource "aws_iam_role_policy_attachment" "s3_backend_attachment" {
   role       = aws_iam_role.terraform_backend_role.name
 }
 
-output "role_arn" {
+
+
+
+/*-----------------------outputs--------------------------*/
+
+output "backend_role_arn" {
   value = aws_iam_role.terraform_backend_role.arn
 }
+
+output "vpc1"{
+  value = aws_vpc.vpc1.id
+  }
+
+
